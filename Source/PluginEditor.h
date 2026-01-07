@@ -29,6 +29,7 @@ private:
     AudioPluginAudioProcessor& processorRef;
 
     juce::AudioProcessorValueTreeState::SliderAttachment freqSliderAttachment;
+    juce::AudioProcessorValueTreeState::ButtonAttachment playButtonAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

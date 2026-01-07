@@ -2,6 +2,7 @@
 #include "PluginEditor.h"
 #include "juce_audio_processors/juce_audio_processors.h"
 #include "juce_audio_processors_headless/juce_audio_processors_headless.h"
+#include <memory>
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
@@ -138,8 +139,10 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear (i, 0, buffer.getNumSamples());
 
     float freq = state.getRawParameterValue("freqHz")->load();
+    bool shouldBePlaying = static_cast<bool>(state.getRawParameterValue("play")->load());
     
     sineWave.setFrequency(freq);
+    sineWave.setAmplitude(shouldBePlaying ? 0.4f : 0.0f);
 
     // process audio in buffer loop
     sineWave.process(buffer);
@@ -181,6 +184,7 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameters()
 {
+    // this is so that the frequency range slider is on a pseudo log scale
     juce::NormalisableRange<float> frequencyRange(20.f, 15'000.0f);
     frequencyRange.setSkewForCentre(1000.f);
 
@@ -192,6 +196,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
             "Frequency",
             frequencyRange, 
             440.0f
+        ),
+        std::make_unique<juce::AudioParameterBool>(
+            "play",
+            "Play",
+            true
         )
     };
     
