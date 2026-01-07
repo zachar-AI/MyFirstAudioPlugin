@@ -5,8 +5,12 @@
 class SineWave
 {
 public:
-  void prepare (double sampleRate, int numChannels);
+  void prepare (const double sampleRate, const int numChannels);
   void process (juce::AudioBuffer<float>& buffer);
+  [[nodiscard]] float getAmplitude() const {return amplitude_;}
+  [[nodiscard]] float getFrequency() const {return frequency_;}
+  void setAmplitude(const float amplitude) {amplitude_ = amplitude;}
+  void setFrequency(const float frequency) {frequency_ = frequency;}
 
 private:
   float amplitude_ = 0.5f;

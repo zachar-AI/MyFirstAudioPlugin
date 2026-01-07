@@ -1,16 +1,16 @@
 #include "SineWave.h"
 #include <cmath>
 
-void SineWave::prepare (double sampleRate, int numChannels)
+void SineWave::prepare (const double sampleRate,const int numChannels)
 {
   sampleRate_ = static_cast<float>(sampleRate);
   timeIncrement_ = 1.0f / sampleRate_;
-  currentTime_.resize(numChannels, 0.0f);
+  currentTime_.resize(static_cast<size_t>(numChannels), 0.0f);
 }
 
 void SineWave::process (juce::AudioBuffer<float>& buffer)
 {
-  if (currentTime_.size() != buffer.getNumChannels())
+  if (currentTime_.size() != static_cast<size_t>(buffer.getNumChannels()))
     return;
 
   for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
@@ -19,8 +19,8 @@ void SineWave::process (juce::AudioBuffer<float>& buffer)
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
-      output[sample] = amplitude_ * std::sinf(juce::MathConstants<float>::twoPi * frequency_ * currentTime_[channel]);
-      currentTime_[channel] += timeIncrement_;
+      output[sample] = amplitude_ * std::sinf(juce::MathConstants<float>::twoPi * frequency_ * currentTime_[static_cast<size_t>(channel)]);
+      currentTime_[static_cast<size_t>(channel)] += timeIncrement_;
     }
   }
 }
