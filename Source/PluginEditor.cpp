@@ -2,6 +2,7 @@
 #include "juce_events/juce_events.h"
 #include "juce_graphics/juce_graphics.h"
 #include "juce_gui_basics/juce_gui_basics.h"
+#include "public.sdk/source/vst/moduleinfo/jsoncxx.h"
 #include "PluginEditor.h"
 
 //==============================================================================
@@ -10,16 +11,28 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     , processorRef (p)
     , freqSliderAttachment(processorRef.getState(), "freqHz", frequencySlider)
     , playButtonAttachment(processorRef.getState(), "play", playButton)
+    , ampSliderAttachment(processorRef.getState(), "vol", amplitudeSlider)
 {
     juce::ignoreUnused (processorRef);
 
-    // addAndMakeVisible(square);
 
-    frequencySlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    // freq slider setup
+    frequencySlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     frequencySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 50);
     // frequencySlider.setRange(0.0f, 1.0f, 0.01f);
     addAndMakeVisible(frequencySlider);
+    
+    // set up freq label
+    // frequencyLabel.setColour(juce::Label::ColourIds::outlineColourId, juce::Colours::wheat);
+    frequencyLabel.setJustificationType(juce::Justification::centred);    
+    addAndMakeVisible(frequencyLabel);
 
+    // amp slider setup
+    amplitudeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    amplitudeSlider.setTextBoxStyle(juce::Slider::TextBoxAbove, true, 100, 50);
+    addAndMakeVisible(amplitudeSlider);
+
+    // play Button Setup
     playButton.setButtonText("Play");
     playButton.setToggleState(true, juce::NotificationType::dontSendNotification); 
     playButton.setClickingTogglesState(true);
@@ -35,9 +48,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     };
     addAndMakeVisible(playButton);
 
-    // frequencyLabel.setColour(juce::Label::ColourIds::outlineColourId, juce::Colours::wheat);
-    frequencyLabel.setJustificationType(juce::Justification::centred);    
-    addAndMakeVisible(frequencyLabel);
 
 
     setSize (1000, 600);
@@ -64,7 +74,8 @@ void AudioPluginAudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     // square.setBounds(50, 250, 300, 100);
-    frequencyLabel.setBounds (getWidth() / 2 - 50, getHeight() / 2 - 120, 100, 20);
-    frequencySlider.setBounds(450, 200, 100, 200);
+    // frequencyLabel.setBounds (getWidth() / 2 - 50, getHeight() / 2 - 120, 100, 20);
+    frequencySlider.setBounds(600, 300, 100, 100);
     playButton.setBounds(450, 450, 100, 30);
+    amplitudeSlider.setBounds(450, 200, 100, 200);
 }

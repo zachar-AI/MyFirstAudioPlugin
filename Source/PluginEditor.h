@@ -23,6 +23,7 @@ private:
     Square square;
 
     juce::Slider frequencySlider;
+    juce::Slider amplitudeSlider;
     juce::TextButton playButton;
     juce::Label frequencyLabel {"FrequencyLabel", "Frequency"};
 
@@ -30,6 +31,7 @@ private:
 
     juce::AudioProcessorValueTreeState::SliderAttachment freqSliderAttachment;
     juce::AudioProcessorValueTreeState::ButtonAttachment playButtonAttachment;
+    juce::AudioProcessorValueTreeState::SliderAttachment ampSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
