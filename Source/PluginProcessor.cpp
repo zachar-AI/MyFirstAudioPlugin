@@ -97,6 +97,7 @@ void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     // getRawParameterValue is expensive so it should only happen at initialization of sound
     frequencyParam = state.getRawParameterValue("freqHz");
     playParam = state.getRawParameterValue("play");
+    amplitudeParam = state.getRawParameterValue("amp");
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -144,10 +145,11 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
 
     const float freq = frequencyParam->load();
+    const float amp = amplitudeParam->load(); 
     const bool shouldBePlaying = static_cast<bool>(playParam->load());
 
     sineWave.setFrequency(freq);
-    sineWave.setAmplitude(shouldBePlaying ? 0.4f : 0.0f);
+    sineWave.setAmplitude(shouldBePlaying ? amp : 0.0f);
 
     // process audio in buffer loop
     sineWave.process(buffer);
