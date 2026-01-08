@@ -192,7 +192,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     // this is so that the frequency range slider is on a pseudo log scale
     juce::NormalisableRange<float> frequencyRange(20.f, 15'000.0f);
     frequencyRange.setSkewForCentre(1000.f);
-
+    
     return
     {
         std::make_unique <juce::AudioParameterFloat>
@@ -200,6 +200,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
             "freqHz", 
             "Frequency",
             frequencyRange, 
+            440.0f
+        ),
+        std::make_unique <juce::AudioParameterFloat>
+        ( 
+            "amp", 
+            "Amplitude",
+            0.0f, 
+            1.0f, 
             440.0f
         ),
         std::make_unique<juce::AudioParameterBool>(

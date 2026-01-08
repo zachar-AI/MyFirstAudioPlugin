@@ -10,7 +10,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     , processorRef (p)
     , freqSliderAttachment(processorRef.getState(), "freqHz", frequencySlider)
     , playButtonAttachment(processorRef.getState(), "play", playButton)
-    , ampSliderAttachment(processorRef.getState(), "vol", amplitudeSlider)
+    , ampSliderAttachment(processorRef.getState(), "amp", amplitudeSlider)
 {
     juce::ignoreUnused (processorRef);
 
