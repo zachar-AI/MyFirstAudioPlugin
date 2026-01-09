@@ -202,7 +202,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
             "freqHz", 
             "Frequency",
             frequencyRange, 
-            440.0f
+            220.0f
         ),
         std::make_unique <juce::AudioParameterFloat>
         ( 
@@ -210,7 +210,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
             "Amplitude",
             0.0f, 
             1.0f, 
-            440.0f
+            0.9f
         ),
         std::make_unique<juce::AudioParameterBool>(
             "play",
