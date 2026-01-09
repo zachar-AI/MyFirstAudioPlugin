@@ -9,29 +9,29 @@ void SineWave::prepare(const double sampleRate, const int numChannels)
   smoothedFreq_.reset(sampleRate_, 0.05f);
   smoothedFreq_.setCurrentAndTargetValue(getFrequency());
 
-  smoothedAmp_.reset(sampleRate_, 0.07f);
+  smoothedAmp_.reset(sampleRate_, 0.01f);
   smoothedAmp_.setCurrentAndTargetValue(getAmplitude());
 
-  smoothedPower_.reset(sampleRate_, 0.50f);
+  smoothedPower_.reset(sampleRate_, 0.25f);
   smoothedPower_.setCurrentAndTargetValue(1.0f);
 }
 
 void SineWave::process(juce::AudioBuffer<float> &buffer) {
+
   if (phases_.size() != static_cast<size_t>(buffer.getNumChannels()))
     return;
 
-  for (size_t channel = 0; channel < static_cast<size_t>(buffer.getNumChannels()); ++channel)
+  for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
   {
-    auto *output = buffer.getWritePointer(static_cast<int>(channel));
+    float frequency = smoothedFreq_.getNextValue();
+    float amplitude = smoothedAmp_.getNextValue();
+    float power = smoothedPower_.getNextValue();
+    
+    const float phaseInc = doublePi * frequency / sampleRate_;
 
-    for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+    for (size_t channel = 0; channel < static_cast<size_t>(buffer.getNumChannels()); ++channel)
     {
-      float frequency = smoothedFreq_.getNextValue();
-      float amplitude = smoothedAmp_.getNextValue();
-      float power = smoothedPower_.getNextValue();
-
-      const float phaseInc = doublePi * frequency / sampleRate_;
-
+      auto *output = buffer.getWritePointer(static_cast<int>(channel));
       output[sample] = power * amplitude * std::sinf(phases_[channel]);
       phases_[channel] += phaseInc;
 

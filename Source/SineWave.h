@@ -8,8 +8,8 @@ class SineWave
 public:
   void prepare (const double sampleRate, const int numChannels);
   void process (juce::AudioBuffer<float>& buffer);
-  [[nodiscard]] float getAmplitude() { return smoothedAmp_.getNextValue(); }
-  [[nodiscard]] float getFrequency() { return smoothedFreq_.getNextValue(); }
+  [[nodiscard]] float getAmplitude() { return smoothedAmp_.getCurrentValue(); }
+  [[nodiscard]] float getFrequency() { return smoothedFreq_.getCurrentValue(); }
   void setAmplitude(const float amplitude) { smoothedAmp_.setTargetValue(amplitude); }
   void setFrequency(const float frequency) { smoothedFreq_.setTargetValue(frequency); }
   void setPower(const bool powerOn) {smoothedPower_.setTargetValue(powerOn ? 1.0f : 0.0f); }
