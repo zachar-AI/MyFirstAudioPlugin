@@ -210,7 +210,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
             "Amplitude",
             0.0f, 
             1.0f, 
-            0.9f
+            1.0f
         ),
         std::make_unique<juce::AudioParameterBool>(
             "play",

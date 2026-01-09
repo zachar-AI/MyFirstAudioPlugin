@@ -5,8 +5,10 @@ void SineWave::prepare(const double sampleRate, const int numChannels)
 {
   sampleRate_ = static_cast<float>(sampleRate);
   phases_.resize(static_cast<size_t>(numChannels), 0.0f);
-  smoothedFreq_.reset(sampleRate_, 0.1f);
+  smoothedFreq_.reset(sampleRate_, 0.05f);
   smoothedFreq_.setCurrentAndTargetValue(getFrequency());
+  smoothedAmp_.reset(sampleRate_, 0.05f);
+  smoothedAmp_.setCurrentAndTargetValue(getAmplitude());
 }
 
 void SineWave::process(juce::AudioBuffer<float> &buffer) {
@@ -20,9 +22,10 @@ void SineWave::process(juce::AudioBuffer<float> &buffer) {
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
       float frequency = smoothedFreq_.getNextValue();
+      float amplitude = smoothedAmp_.getNextValue();
       const float phaseInc = doublePi * frequency / sampleRate_;
 
-      output[sample] = amplitude_ * std::sinf(phases_[channel]);
+      output[sample] = amplitude * std::sinf(phases_[channel]);
       phases_[channel] += phaseInc;
 
       if (phases_[channel] >= doublePi)
